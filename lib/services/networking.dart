@@ -6,7 +6,7 @@ class NetworkHelper {
   final Uri url;
   NetworkHelper(this.url);
 
-  Future getData() async {
+  dynamic getData() async {
     var result = await http.get(url);
     if (result.statusCode == 200) {
       return jsonDecode(result.body);

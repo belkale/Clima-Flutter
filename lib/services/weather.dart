@@ -2,22 +2,30 @@ import 'location.dart';
 import 'networking.dart';
 
 const api_key = 'getyourownapikey';
+const openweather_host = 'api.openweathermap.org';
+const openweather_path = 'data/2.5/weather';
 
 class WeatherModel {
-  Future getLocationWeather() async {
+  Future<dynamic> GetCityWeather(String cityName) {
+    var url = Uri.https(openweather_host, openweather_path,
+        {'q': cityName, 'units': 'metric', 'appid': api_key});
+    NetworkHelper helper = NetworkHelper(url);
+    return helper.getData();
+  }
+
+  Future<dynamic> getLocationWeather() async {
     Location location = Location();
     await location.getCurrentLocation();
     print('Position: ${location.latitude} ${location.longitude}');
 
-    var url = Uri.https('api.openweathermap.org', 'data/2.5/weather', {
+    var url = Uri.https(openweather_host, openweather_path, {
       'lat': location.latitude.toString(),
       'lon': location.longitude.toString(),
       'units': 'metric',
       'appid': api_key
     });
     NetworkHelper helper = NetworkHelper(url);
-    var weatherData = await helper.getData();
-    return weatherData;
+    return helper.getData();
   }
 
   String getWeatherIcon(int condition) {
